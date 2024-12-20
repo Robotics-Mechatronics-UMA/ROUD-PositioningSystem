@@ -9,6 +9,7 @@ Before starting, ensure you have the following installed:
 - Docker
 - Permissions to use X11 on the host system (for graphical visualization)
 - Access to the project repository, which contains the necessary scripts.
+- MATLAB
 
 ## Project Structure
 The project is organized as follows:
