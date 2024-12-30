@@ -15,25 +15,37 @@ Before starting, ensure you have the following installed:
 The project is organized as follows:
 
 ```
-repo_sA/
+ROUD_ps/
 ├── Code/
 │   ├── Multilateration/
-│   │   ├── DB_testing.py
-│   │   ├── sendData2ROS.py
+│   │   ├── server.py
+│   │   ├── rosPublishers.py
 │   │   ├── graphics.py
-│   │   └── ...
+│   │   ├── Library.py
+│   │   └── anchorsPositions.py
 ├── Dataset/
+│   ├── experiment_recording.bag
+│   ├── raw_data.bag
 │   └── Real_JEMERG23.sh
 ├── SARFIS/
-│   └── Matlab functions/ROS/
+│   ├── DEM files/
+│   ├── Matlab functions/
+│   │   ├── DEM/
+│   │   ├── GPX/
+│   │   ├── GUI/
+│   │   └── ROS/
+│   ├── resources/
+│   ├── works/
+│   └── SARFIS.prj
 ├── Figures/
 ├── Demo/
 └── docker_launch.sh
+
 ```
 
-- `Code/Multilateration/`: Contains the Python scripts for the workflow.
-- `Dataset/Real_JEMERG23.sh`: Main script that manages rosbag recording.
-- `SARFIS/Matlab functions/ROS/`: Folder where recorded rosbags are stored.
+- `Code/Multilateration/`: Contains the multilateration algorithm and workflow to be applied on the provided dataset.
+- `Dataset/`: Contains the real data from the experiment and raw data to be processed offline.
+- `SARFIS/Matlab functions/ROS/`: Folder where new recorded rosbags are stored.
 - `docker_launch.sh`: Main script to launch the container and execute the workflow.
 
 ## Instructions
