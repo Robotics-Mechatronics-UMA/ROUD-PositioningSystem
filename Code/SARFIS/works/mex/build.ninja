@@ -1,0 +1,59 @@
+# CompilerName=gcc
+# Mode=optim
+ninja_required_version = 1.3
+
+# Basic folders
+root = .
+builddir = $root/build/glnxa64
+matlabdir = /opt/matlab/R2023b
+startdir = /home/imech_uma/shared/SARFISv2024
+
+# Toolchain information
+cc = /usr/bin/gcc
+cxx = g++
+linker = /usr/bin/gcc
+linkerxx = g++
+
+cflags =  -fexceptions -fPIC -fno-omit-frame-pointer -pthread -fwrapv -D_GNU_SOURCE -DMATLAB_MEX_FILE  -O2 -DNDEBUG -std=c99 -I "$root" -I "$startdir" -I "$root/interface" -I "$matlabdir/extern/include" -I "." -DMODEL=DEMAIA_mex -msse2 -c 
+
+cxxflags =  -fexceptions -fPIC -fno-omit-frame-pointer -pthread -fwrapv -D_GNU_SOURCE -DMATLAB_MEX_FILE  -O2 -DNDEBUG -std=c++11 -I "$root" -I "$startdir" -I "$root/interface" -I "$matlabdir/extern/include" -I "." -DMODEL=DEMAIA_mex -msse2 -c 
+
+ldflags =  -pthread -Wl,--no-undefined -Wl,-rpath-link,$matlabdir/bin/glnxa64 -shared  -L"$matlabdir/bin/glnxa64" -lmx -lmex -lmat -lm -lstdc++  -Wl,-Bsymbolic -o DEMAIA_mex.mexa64 -lemlrt -lcovrt -lut -lmwmathutil  -Wl,--version-script,DEMAIA_mex.map
+
+linkobjs = 
+
+# Build Rules
+rule cc
+    command = $cc $cflags $in -o $out
+
+rule cxx
+    command = $cxx $cxxflags $in -o $out
+
+rule link
+    command = $linker $in $linkobjs $ldflags
+
+rule linkxx
+    command = $linkerxx $in $linkobjs $ldflags
+
+# Build
+build $builddir/DEMAIA_data.o : cc $root/DEMAIA_data.c
+build $builddir/rt_nonfinite.o : cc $root/rt_nonfinite.c
+build $builddir/DEMAIA_initialize.o : cc $root/DEMAIA_initialize.c
+build $builddir/DEMAIA_terminate.o : cc $root/DEMAIA_terminate.c
+build $builddir/DEMAIA.o : cc $root/DEMAIA.c
+build $builddir/isequal.o : cc $root/isequal.c
+build $builddir/repmat.o : cc $root/repmat.c
+build $builddir/diag.o : cc $root/diag.c
+build $builddir/isequaln.o : cc $root/isequaln.c
+build $builddir/ismember.o : cc $root/ismember.c
+build $builddir/combineVectorElements.o : cc $root/combineVectorElements.c
+build $builddir/_coder_DEMAIA_api.o : cc $root/interface/_coder_DEMAIA_api.c
+build $builddir/_coder_DEMAIA_mex.o : cc $root/interface/_coder_DEMAIA_mex.c
+build $builddir/eml_int_forloop_overflow_check.o : cc $root/eml_int_forloop_overflow_check.c
+build $builddir/sumMatrixIncludeNaN.o : cc $root/sumMatrixIncludeNaN.c
+build $builddir/DEMAIA_emxutil.o : cc $root/DEMAIA_emxutil.c
+build $builddir/_coder_DEMAIA_info.o : cc $root/interface/_coder_DEMAIA_info.c
+build $builddir/c_mexapi_version.o : cc $matlabdir/extern/version/c_mexapi_version.c
+
+# Link
+build $root/DEMAIA_mex.mexa64 : link $builddir/DEMAIA_data.o $builddir/rt_nonfinite.o $builddir/DEMAIA_initialize.o $builddir/DEMAIA_terminate.o $builddir/DEMAIA.o $builddir/isequal.o $builddir/repmat.o $builddir/diag.o $builddir/isequaln.o $builddir/ismember.o $builddir/combineVectorElements.o $builddir/_coder_DEMAIA_api.o $builddir/_coder_DEMAIA_mex.o $builddir/eml_int_forloop_overflow_check.o $builddir/sumMatrixIncludeNaN.o $builddir/DEMAIA_emxutil.o $builddir/_coder_DEMAIA_info.o $builddir/c_mexapi_version.o 

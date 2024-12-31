@@ -1,0 +1,24 @@
+LIBRARY DEMAIA_mex.mexw64
+EXPORTS
+mexFunction
+mexfilerequiredapiversion
+emlrtMexFcnProperties
+DEMAIA
+DEMAIA_initialize
+DEMAIA_terminate
+DEMAIA_atexit
+emxEnsureCapacity_boolean_T
+emxEnsureCapacity_cell_wrap_0
+emxTrim_cell_wrap_0
+emxExpand_cell_wrap_0
+emxInitStruct_cell_wrap_0
+emxFree_boolean_T
+emxInit_boolean_T
+emxFreeStruct_captured_var
+emxInitStruct_captured_var
+emxInit_real_T
+emxFree_cell_wrap_0
+emxFreeStruct_cell_wrap_0
+emxFree_real_T
+emxInit_cell_wrap_0
+emxEnsureCapacity_real_T
