@@ -1,7 +1,7 @@
-# Docker Multilateration - README
+# System use
 
 ## Description
-This project uses a Docker container to execute a multilateration workflow, including recording rosbags and analyzing the data using a Python script (`graphics.py`). Everything is managed by a launch script (`docker_launch.sh`) that automates the process and ensures it runs in a controlled environment.
+This project uses a Docker container to execute a multilateration algorithm in real-time on a raw dataset, processed offline, while allowing graphical visualization of the results. Everything is managed by a launch script (docker_launch.sh) that automates the process and ensures it runs in a controlled environment.
 
 ## Requirements
 Before starting, ensure you have the following installed:
@@ -9,7 +9,7 @@ Before starting, ensure you have the following installed:
 - Docker
 - Permissions to use X11 on the host system (for graphical visualization)
 - Access to the project repository, which contains the necessary scripts.
-- MATLAB
+- MATLAB R2023b or higher versions.
 
 ## Project Structure
 The project is organized as follows:
@@ -42,7 +42,6 @@ ROUD_ps/
 └── docker_launch.sh
 
 ```
-
 - `Code/Multilateration/`: contains the multilateration algorithm and workflow to be applied on the provided dataset.
 - `Dataset/`: contains the real data from the experiment and raw data to be processed offline.
 - `SARFIS/Matlab functions/ROS/`: folder where new recorded rosbags are stored.
@@ -51,35 +50,49 @@ ROUD_ps/
 ## Instructions
 
 ### 1. Initial Setup
+
+Build the docker image: 
+```
+docker build -t ros-noetic-multilateration .
+```
+
 Before launching the container:
 
-1. Ensure the required files (e.g., `server_ros_bridge.py`, `ros_wrapper.py`, `data_visualization.py`, and `Real_JEMERG23.sh`) are present in the expected paths.
+1. Ensure the required files (e.g., `server_ros_bridge.py`, `ros_wrapper.py`, `data_visualization.py`, and `Real_JEMERG23.sh`) are present in the expected paths (see the project's structure).
 2. Verify that you have X11 access from Docker:
    ```bash
    xhost +local:root
    ```
+3. Stops and removes any previous container with the name `ros1_multilateration`.
+   ```
+   docker stop ros1_multilateration
+   docker rm ros1_multilateration
+   ```
 
-### 2. Launch the Container
-To launch the container and execute the workflow:
+### 2. Launch the Container indicating the estimation mode applied in the multilateration algorithm.
+1. To launch the container and execute the workflow:
 
 ```bash
 ./docker_launch.sh OLS
 ```
+Where `OLS` is the specified estimation mode. You can replace the Ordinary Least Squares mode (`OLS`) with other estimation methods if supported by the `Real_JEMERG23.sh` script.
 
-Where `OLS` is the specified execution mode. You can replace `OLS` with another mode if supported by the `Real_JEMERG23.sh` script.
+2. The user can access the container from other terminals using:
+   ```
+   docker exec -it ros1_multilateration bash
+   ```
 
 ### 3. Automated Process
 The `docker_launch.sh` script performs the following tasks:
 
-1. Stops and removes any previous container with the name `ros1_multilateration`.
-2. Launches a new interactive Docker container.
-3. Executes the `Real_JEMERG23.sh` script, which includes:
+1. Executes the `Real_JEMERG23.sh` script, which includes:
    - Initializing `roscore`.
-   - Playing an input rosbag.
+   - Playing the rosbag 
+   - Launching the raw
    - Recording a new rosbag in the `SARFIS/Matlab functions/ROS/` folder.
-4. Waits for all processes (e.g., rosbag play, recording) to complete.
-5. Automatically detects the recorded rosbag and extracts its start time.
-6. Executes the `data_visualization.py` script with the detected parameters.
+2. Waits for all processes (e.g., rosbag play, recording) to complete.
+3. Automatically detects the recorded rosbag and extracts its start and end times.
+4. Executes the `data_visualization.py` script with the detected parameters.
 
 ### 4. Resulting Files
 Workflow results include:
@@ -122,18 +135,10 @@ If the recorded rosbag file is not found:
    ```
 2. Check the directory permissions and container logs.
 
-#### Processes Running in Background Block Graphics Execution
-If the `graphics.py` script does not execute because background processes are still running:
-1. Ensure all rosbag processes (e.g., `rosbag play`, `rosbag record`) have completed successfully.
-2. Add a delay or synchronization mechanism in the script to wait for the processes to finish before executing `graphics.py`.
-3. Check the container logs for errors:
-   ```bash
-   docker logs ros1_multilateration
-   ```
 
 ### 7. Additional Notes
 - To customize the workflow, modify the `Real_JEMERG23.sh` or `data_visualization.py` scripts as needed.
-- If you need to add new execution modes, ensure the relevant scripts are updated accordingly.
+- If you need to add new execution modes or filters, ensure the relevant scripts are updated accordingly.
 
 ### 8. Explanation of SARFIS Tool
 
