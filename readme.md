@@ -2,7 +2,6 @@
 
 ## Description
 This project uses a Docker container to execute a multilateration algorithm in real-time on a raw dataset, processed offline, while allowing graphical visualization of the results. Everything is managed by a launch script (docker_launch.sh) that automates the process and ensures it runs in a controlled environment.
-=======
 
 ## Requirements
 Before starting, ensure you have the following installed:
@@ -10,6 +9,7 @@ Before starting, ensure you have the following installed:
 - Docker
 - Permissions to use X11 on the host system (for graphical visualization)
 - Access to the project repository, which contains the necessary scripts.
+- MATLAB R2023b or higher versions.
 
 ## Project Structure
 The project is organized as follows:
@@ -158,4 +158,5 @@ The SARFIS tool requires two instances of MATLAB:
 3. **Final Step:**
    - Return to the first MATLAB instance and press ENTER.
    - Observe the recorded bag being replayed offline in the SARFIS tool.
+
 
