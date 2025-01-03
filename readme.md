@@ -16,32 +16,36 @@ The project is organized as follows:
 
 ```
 ROUD_ps/
+├── Dataset/
+│   ├── experiment_recording.bag
+│   ├── raw_data.bag
+│   └── Real_JEMERG23.sh
 ├── Code/
+│   ├── SARFIS/
+│   │   ├── DEM files/
+│   │   ├── Matlab functions/
+│   │   │   ├── DEM/
+│   │   │   ├── GPX/
+│   │   │   ├── GUI/
+│   │   │   └── ROS/
+│   │   │       ├── experimentRosbag.bag
+│   │   │       ├── rawRosbag.bag
+│   │   │       └── ROSbag_play.m
+│   │   ├── resources/
+│   │   ├── works/
+│   │   └── SARFIS.prj
 │   ├── Multilateration/
 │   │   ├── server_ros_bridge.py
 │   │   ├── ros_wrapper.py
 │   │   ├── data_visualization.py
 │   │   ├── positioning_rtt_ils.py
 │   │   └── anchors_positions.py
-├── Dataset/
-│   ├── experiment_recording.bag
-│   ├── raw_data.bag
-│   └── Real_JEMERG23.sh
-├── SARFIS/
-│   ├── DEM files/
-│   ├── Matlab functions/
-│   │   ├── DEM/
-│   │   ├── GPX/
-│   │   ├── GUI/
-│   │   └── ROS/
-│   ├── resources/
-│   ├── works/
-│   └── SARFIS.prj
 ├── Figures/
 ├── Demo/
+│   └── video-demo.mp4
 └── docker_launch.sh
-
 ```
+
 - `Code/Multilateration/`: contains the multilateration algorithm and workflow to be applied on the provided dataset.
 - `Dataset/`: contains the real data from the experiment and raw data to be processed offline.
 - `SARFIS/Matlab functions/ROS/`: folder where new recorded rosbags are stored.
