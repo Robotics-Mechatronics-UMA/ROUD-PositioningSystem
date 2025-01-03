@@ -1,6 +1,6 @@
 %% carga el fichero ROSbag deseado
 format longG, clc
-ROSbag_file_default = '2023-10-11-14-28-09_splited.bag';
+ROSbag_file_default = 'experimentRosbag.bag';
 ROSbag_file = input(['Input the ROSbag filename (default = "', ROSbag_file_default, '") : ']);
 if isempty(ROSbag_file) ROSbag_file = ROSbag_file_default; end
 speed = input('Input the speed coefficient to accelerate the simulation (default = 1) : ');
