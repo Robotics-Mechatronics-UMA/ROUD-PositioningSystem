@@ -472,8 +472,8 @@ def plot_ecdf_conjunta(em_P1, em_X3, rtt_error_P1_uav, rtt_error_X3_uav, rtt_err
 
     plt.tight_layout()
     
-    output_file = os.path.join(output_dir, "ecdf.png")
-    fig.savefig(output_file, dpi=300)  
+    output_file = os.path.join(output_dir, "ecdf.eps")
+    fig.savefig(output_file, dpi=300, format='eps') 
     plt.close(fig)
     print(f"Figure saved successfully at {output_file}")
 
@@ -556,8 +556,8 @@ def plot_altitudeUAV(gps_data_uav, gps_times_uav, rtt_distances_P1_uav, rtt_dist
     fig.suptitle('UAV Experimental Data Overview', fontsize=18, fontweight='bold')
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
     
-    output_file = os.path.join(output_dir, "uav_altitude.png")
-    fig.savefig(output_file, dpi=300)  
+    output_file = os.path.join(output_dir, "uav_altitude.eps")
+    fig.savefig(output_file, dpi=300, format='eps')  
     plt.close(fig)
     print(f"Figure saved successfully at {output_file}")
     
@@ -654,8 +654,8 @@ def plot_altitudeRoverJ8(gps_data_j8, gps_times_j8, rtt_distances_P1_j8, rtt_dis
     fig.suptitle('UGV Experimental Data Overview', fontsize=18, fontweight='bold')
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
     
-    output_file = os.path.join(output_dir, "ugv_altitude.png")
-    fig.savefig(output_file, dpi=300)  
+    output_file = os.path.join(output_dir, "ugv_altitude.eps")
+    fig.savefig(output_file, dpi=300, format='eps')  
     plt.close(fig)
     print(f"Figure saved successfully at {output_file}")
     #plt.show()
