@@ -1,0 +1,154 @@
+FUNCIONES REVISADAS:
+
+def get_bag_start_end_time(bag_path: str) -> tuple:
+...
+
+def estimate_distance(rssi: int, p0: float, n: float, d0: float = 1.0) -> float:
+...
+
+def euclidean_distance_3d(coord1: Tuple[float, float, float], coord2: Tuple[float, float, float]) -> float:
+...
+
+
+def get_gps_position_at_time(gps_times: List[float], gps_data: List[Tuple[float, float, float]], query_time: float) -> Optional[Tuple[float, float, float]]:
+...
+
+"Optional" significa que puede ser del tipo Tuple o ser None.
+
+def calculate_median_over_intervals(times: List[float], errors: List[float], interval: float = 30.0) -> Tuple[List[float], List[float]]:
+...
+
+"Aquí se pasa un valor por defecto para el parámetro "interval", es decir, el argumento por defecto es 30.0.
+
+No se utiliza:
+
+def calculate_median_over_intervals(times: List[float],
+                                    errors: List[float],
+                                    interval: float = 30.0) -> Tuple[List[float], List[float]]:
+    """
+    Calculates the median values of errors over specified time intervals.
+
+    Args:
+        times (List[float]): List of timestamps.
+        errors (List[float]): List of errors corresponding to the timestamps.
+        interval (float, optional): Time interval for calculating medians. Default is 30 seconds.
+
+    Returns:
+        Tuple[List[float], List[float]]: Median times and their corresponding median errors.
+    """
+    median_times = []
+    median_errors = []
+    start = 0
+    while start < len(times):
+        end = start + interval
+        mask = (np.array(times) >= times[start]) & (np.array(times) < end)
+        current_errors = np.array(errors)[mask]
+        if current_errors.size > 0:
+            median_times.append(np.median(np.array(times)[mask]))
+            median_errors.append(np.median(current_errors))
+        start += interval
+    logging.debug(f"Calculated median over intervals: {median_errors}")
+    return median_times, median_errors
+    
+
+
+Tampoco se utiliza:
+
+
+def synchronize_data(gps_times: List[float],
+                     gps_data: List[Tuple[float, float, float]],
+                     event_times: List[float],
+                     event_data: List[Any]) -> List[Tuple[Any, Tuple[float, float, float]]]:
+    """
+    Synchronize event data with GPS data based on timestamps.
+
+    Args:
+        gps_times (List[float]): List of GPS timestamps.
+        gps_data (List[Tuple[float, float, float]]): List of GPS positions (latitude, longitude, altitude).
+        event_times (List[float]): List of event timestamps.
+        event_data (List[Any]): List of event data corresponding to the timestamps.
+
+    Returns:
+        List[Tuple[Any, Tuple[float, float, float]]]: Synchronized event data paired with corresponding GPS positions.
+    """
+    synchronized = []
+    for event_time, data in zip(event_times, event_data):
+        gps_position = get_gps_position_at_time(gps_times, gps_data, event_time)
+        if gps_position:
+            synchronized.append((data, gps_position))
+    logging.debug(f"Synchronized {len(synchronized)} event data with GPS data.")
+    return synchronized
+    
+ 
+
+
+def read_bag(bag_path: str,
+             bag_start_time: float,
+             start_interval: float,
+             end_interval: float,
+             altitude_threshold: float,
+             multilateration_topic: str) -> Tuple:
+             
+             
+ Esta función tiene 6 parámetros (2 strings y 4 floats) y devuelve una tupla de valores, que son los datos procesados: GPS; RTT; RSSI; multilateración.
+ 
+ 
+ 
+ Esta función tampoco se usa:
+
+
+
+def calculate_median_filtered_positions_with_time(coordinates: List[Tuple[float, float, float]],
+                                                  times: List[float],
+                                                  window_size: int = 10,
+                                                  fixed_altitude: float = 94.7) -> Tuple[List[Tuple[float, float, float]], List[float]]:
+    """
+    Calculate the median of positions over time intervals and assign a fixed altitude.
+
+    Args:
+        coordinates (List[Tuple[float, float, float]]): List of positions (latitude, longitude, altitude).
+        times (List[float]): List of timestamps corresponding to the positions.
+        window_size (int): Number of data points per window for median calculation.
+        fixed_altitude (float): Altitude to assign to the median positions.
+
+    Returns:
+        Tuple[List[Tuple[float, float, float]], List[float]]: Filtered positions with fixed altitude and their timestamps.
+    """
+    latitudes = [coord[0] for coord in coordinates]
+    longitudes = [coord[1] for coord in coordinates]
+
+    filtered_latitudes = []
+    filtered_longitudes = []
+    filtered_times = []
+
+    for i in range(0, len(latitudes), window_size):
+        lat_window = latitudes[i:i + window_size]
+        lon_window = longitudes[i:i + window_size]
+        time_window = times[i:i + window_size]
+
+        if len(lat_window) == window_size:
+            median_lat = np.median(lat_window)
+            median_lon = np.median(lon_window)
+            median_time = time_window[window_size // 2]  # Time of the central element
+            filtered_latitudes.append(median_lat)
+            filtered_longitudes.append(median_lon)
+            filtered_times.append(median_time)
+
+    # Add fixed altitude to each filtered position
+    filtered_coordinates = [(lat, lon, fixed_altitude) for lat, lon in zip(filtered_latitudes, filtered_longitudes)]
+
+    logging.debug(f"Calculated median filtered positions: {len(filtered_coordinates)} entries.")
+    return filtered_coordinates, filtered_times
+
+
+
+def calculate_error(estimated_distances: List[float],
+                    real_distances: List[float]) -> List[float]:
+                    
+                    
+Esta función calcula el error entre la estimación de distancia y la distancia real.
+
+Por ejemplo RTT vs distancia (GPS).
+
+
+
