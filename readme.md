@@ -51,6 +51,16 @@ ROUD_ps/
 - `SARFIS/Matlab functions/ROS/`: folder where new recorded rosbags are stored.
 - `docker_launch.sh`: shell script used to automate tasks.
 
+## DEM Files
+
+The `Code/SARFIS/DEM_files/` directory is currently empty.
+
+Please download the required Digital Elevation Model (DEM) files and place them inside this folder.  
+You can access and download the files from the following link:
+
+🔗 [DEM files](https://uma365-my.sharepoint.com/my?id=%2Fpersonal%2Fjbravo%5Fuma%5Fes%2FDocuments%2FDEM%20files&ga=1)
+
+
 ## Instructions
 
 ### 1. Initial Setup
